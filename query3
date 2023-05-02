@@ -1,0 +1,29 @@
+select * from t_customer tcu 
+            left join t_customer_xref tcx 
+            on tcu.customer_id = tcx.customer_id 
+            left join t_customer_worker tcw 
+            on tcu.customer_id = tcw.customer_id 
+            left join t_customer_plan tcpl 
+            on tcu.customer_id = tcpl.customer_id 
+            left join t_customer_contact tcc 
+            on tcu.customer_id = tcc.customer_id
+            left join t_contact tco 
+            on tcc.contact_id = tco.contact_id 
+            left join t_contact_address tca 
+            on tco.contact_id = tca.contact_id 
+            left join t_address ta 
+            on tca.address_id = ta.address_id 
+            left join t_contact_email tce 
+            on tco.contact_id = tce.contact_id 
+            left join t_email te 
+            on tce.email_id = te.email_id 
+            left join t_contact_phone tcp 
+            on tco.contact_id = tcp.contact_id 
+            left join t_phone tp 
+            on tcp.phone_id = tp.phone_id 
+            left join dbo.t_account tac 
+            on tac.customer_id = tcu.customer_id 
+            where tac.account_id =10119
+            
+            
+            Record =664
