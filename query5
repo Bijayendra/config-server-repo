@@ -1,0 +1,41 @@
+select count(*) from dbo.t_plan tp 
+            left join dbo.t_package_plan tpp  
+            on tpp.plan_id = tp.plan_id  
+            left join dbo.t_package tpa  
+            on tpa.package_id =tpp.package_id  
+            left join dbo.t_account ta  
+            on ta.account_id = tpa.account_id  
+            left join dbo.t_plan_note_detail tpnd  
+            on tpnd.plan_id = tp.plan_id  
+            left join dbo.t_plan_note tpn  
+            on tpn.plan_id = tp.plan_id  
+            left join dbo.t_plan_auth_rule tpar  
+            on tpar.plan_id = tp.plan_id  
+            left join dbo.t_plan_membership tpm  
+            on tpm.plan_id = tp.plan_id   
+            left join dbo.t_plan_limit tpl  
+            on tpl.plan_id = tp.plan_id  
+            left join dbo.t_plan_level tpl2  
+            on tpl2.plan_id = tp.plan_id  
+            left join dbo.t_plan_eap tpe  
+            on tpe.plan_id = tp.plan_id  
+            left join dbo.t_plan_claim tpc  
+            on tpc.plan_id = tp.plan_id  
+            left join dbo.t_auth_proc_prog tapp  
+            on tapp.plan_id = tp.plan_id  
+            left join dbo.t_plan_xref tpx  
+            on tpx.plan_id = tp.plan_id  
+            left join dbo.t_subst_proc_prog tspp  
+            on tspp.plan_id = tp.plan_id  
+            left join dbo.t_plan_subst tps  
+            on tps.subst_id = tspp.subst_id  
+            left join dbo.t_plan_transition tpt  
+            on tpt.plan_id = tp.plan_id  
+            left join dbo.t_limit_proc_prog tlpp  
+            on tlpp.plan_id = tp.plan_id  
+            left join dbo.t_plan_feature tpf  
+            on tpf.plan_id = tp.plan_id  
+            where ta.account_id = 119
+            
+            
+            record 17506543
