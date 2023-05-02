@@ -1,10 +1,9 @@
-SELECT a.eff_date acc_eff_date, a.term_date as acc_term_date, a.is_released as acc_is_released,
+SELECT count(*), a.eff_date acc_eff_date, a.term_date as acc_term_date, a.is_released as acc_is_released,
   c.eff_date as cus_eff_date, c.term_date as cus_term_date, 
   g.eff_date as grp_eff_date, g.term_date as grp_term_date, 
   g.status_code as grp_status_code, 
   gp.eff_date as gp_eff_date, gp.term_date as gp_term_date, p.eff_date as pac_eff_date, p.term_date as pac_term_date, 
-  p2.eff_date as plan_eff_date, p2.term_date as plan_term_date, p2.status_code as plan_status_code, p2.is_released as plan_is_released,
-  
+  p2.eff_date as plan_eff_date, p2.term_date as plan_term_date, p2.status_code as plan_status_code, p2.is_released as plan_is_released
   from dbo.t_account a    
   left join  dbo.t_customer c     
   on c.customer_id = a.customer_id     
@@ -18,8 +17,8 @@ SELECT a.eff_date acc_eff_date, a.term_date as acc_term_date, a.is_released as a
   on pp.package_id  = p.package_id     
   join dbo.t_plan p2    
   on p2.plan_id = pp.plan_id   
-  left join dbo.t_account_xref tax 
-  tax.account_id = a.account_id
+  left join dbo.t_account_xref taxd
+  on taxd.account_id = a.account_id
   left join dbo.t_account_carrier tac2   
   on tac2.account_id = a.account_id   
   left join dbo.t_carrier tc   
@@ -36,8 +35,8 @@ SELECT a.eff_date acc_eff_date, a.term_date as acc_term_date, a.is_released as a
   on tan.account_id = a.account_id  
   left join dbo.t_account_worker taw  
   on taw.account_id = a.account_id  
-  left join dbo.t_alias ta  
-  on ta.account_id = a.account_id  
+  left join dbo.t_alias tas
+  on tas.account_id = a.account_id  
   left join dbo.t_location tl   
   on tl.loc = tam.bh_loc   
   left join dbo.t_loc_phone_extra tlpe   
@@ -89,7 +88,7 @@ SELECT a.eff_date acc_eff_date, a.term_date as acc_term_date, a.is_released as a
   left join dbo.t_group_package_xref tgpx
   on tgpx.package_id = gp.package_id
   left join dbo.t_group_plan_claim tgpc2
-  on tgpc2.group_id = tg.group_id
+  on tgpc2.group_id = g.group_id
   left join dbo.t_group_plan_elig tgpe
   on tgpe.plan_id = tgpc2.plan_id
   left join dbo.t_group_plan_elig_dep tgped
@@ -124,6 +123,4 @@ SELECT a.eff_date acc_eff_date, a.term_date as acc_term_date, a.is_released as a
   on tlpp.plan_id = p2.plan_id
   left join dbo.t_plan_feature tpf
   on tpf.plan_id = p2.plan_id
-  
-  
-   where a.account_id = 10119
+ where a.account_id = 119
