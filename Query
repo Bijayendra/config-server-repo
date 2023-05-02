@@ -1,0 +1,158 @@
+SELECT * , a.eff_date acc_eff_date, a.term_date as acc_term_date, a.is_released as acc_is_released,
+             c.eff_date as cus_eff_date, c.term_date as cus_term_date, 
+             g.eff_date as grp_eff_date, g.term_date as grp_term_date,
+             g.status_code as grp_status_code,
+             g.eff_date as grp_eff_date, g.term_date as grp_term_date , tgn.eff_date as tgn_eff_date,
+tgn.term_date as tgn_term_date, tgp.eff_date as tgp_eff_date, tgp.term_date as tgp_term_plan,
+tgpc.eff_date as tgpc_eff_date, tgpc.term_date as tgpc_term_date,
+tgpu.eff_date as tgpu_eff_date, tgpu.term_date  as tgpu_term_date,
+             gp.eff_date as gp_eff_date, gp.term_date as gp_term_date, p.eff_date as pac_eff_date, p.term_date as pac_term_date,
+             p2.eff_date as plan_eff_date, p2.term_date as plan_term_date, p2.status_code as plan_status_code, p2.is_released as plan_is_released 
+             from dbo.t_account a    
+                                                left join  dbo.t_customer c     
+                                                 on c.customer_id = a.customer_id     
+                                                 join dbo.t_group g     
+                                                 on g.account_id = a.account_id     
+                                                 join dbo.t_group_package gp     
+                                                 on gp.group_id = g.group_id     
+                                                 join dbo.t_package p    
+                                                on p.package_id = gp.package_id    
+                                                join dbo.t_package_plan pp     
+                                                 on pp.package_id  = p.package_id     
+                                                 join dbo.t_plan p2    
+                                                on p2.plan_id = pp.plan_id 
+												left join dbo.t_account_xref tax 
+												on a.account_id = tax.account_id  
+                        left join dbo.t_account_carrier tac2   
+                        on tac2.account_id = a.account_id   
+                        left join dbo.t_carrier tca  
+                        on tca.carrier_id =tac2.carrier_id   
+                        left join dbo.t_account_contact tac3   
+                        on tac3.account_id = a.account_id                                      
+                        left join dbo.t_account_mgt tam  
+                        on tam.account_id = a.account_id   
+                        left join dbo.t_account_note_detail tand  
+                        on tand.account_id = a.account_id   
+                        left join dbo.t_external_benefit teb  
+                        on teb.account_id = a.account_id  
+                        left join dbo.t_account_note tan  
+                        on tan.account_id = a.account_id  
+                        left join dbo.t_account_worker taw  
+                        on taw.account_id = a.account_id  
+                        left join dbo.t_alias tal  
+                        on tal.account_id = a.account_id  
+                        left join dbo.t_location tl   
+                        on tl.loc = tam.bh_loc   
+                        left join dbo.t_loc_phone_extra tlpe   
+                        on tlpe.loc = tam.bh_loc   
+                        left join dbo.t_loc_phone tlp   
+                        on tlp.phone_id = tlpe.phone_id   
+                        left join dbo.t_user tu   
+                        on tu.user_id = taw.user_id   
+                        left join dbo.t_user_role tur   
+                        on tur.user_id = tu.user_id   
+                        left join dbo.t_loc_address_extra tlae  
+                        on tlae.loc = tl.loc  
+                        left join dbo.t_loc_address tla  
+                        on tla.address_id = tlae.address_id
+                        left join t_customer_xref tcx 
+            on c.customer_id = tcx.customer_id 
+            left join t_customer_worker tcw 
+            on c.customer_id = tcw.customer_id 
+            left join t_customer_plan tcpl 
+            on c.customer_id = tcpl.customer_id 
+            left join t_customer_contact tcc 
+            on tcc.customer_id = c.customer_id 
+			left join dbo.t_group_note tgn  
+            on tgn.group_id = g.group_id  
+            join dbo.t_group_xref tgx  
+            on tgx.group_id = g.group_id  
+            left join dbo.t_group_note_detail tgnd  
+            on tgnd.note_id = tgn.note_id  
+            join dbo.t_group_package tgp  
+            on tgp.group_id = g.group_id  
+            left join dbo.t_group_package_cosmos tgpc  
+            on tgpc.package_id = tgp.package_id  
+            left join dbo.t_group_package_unet tgpu  
+            on tgpu.package_id = tgp.package_id 
+            left join dbo.t_group_package_xref tgpx  
+            on tgpx.package_id = tgp.package_id 
+            left join dbo.t_group_plan_claim tgpc2  
+            on tgpc2.group_id = g.group_id  
+            left join dbo.t_group_plan_elig tgpe  
+            on tgpe.plan_id = tgpc2.plan_id  
+            left join dbo.t_group_plan_elig_dep tgped  
+            on tgped.plan_id = tgpe.plan_id  
+            left join dbo.t_pif_benefit_plan tpbp  
+            on tpbp.pif_benefit_plan_id = p2.pif_benefit_plan_id  
+            left join dbo.t_pif_plan_provision tppp2 
+            on tppp2.benefit_plan_id = tpbp.pif_benefit_plan_id  
+            left join dbo.t_pif_prov_tier_assoc tppta  
+            on tppta.pif_plan_provision_id = tppp2.pif_plan_provision_id 
+            left join dbo.t_pif_outpatient_provision tpop  
+            on tpop.pif_plan_provision_id = tppp2.pif_plan_provision_id  
+            left join dbo.t_pif_partial_provision tppp  
+            on tppp.pif_plan_provision_id = tppp2.pif_plan_provision_id  
+            left join dbo.t_pif_note tpn   
+            on tpn.pif_plan_provision_id = tppp2.pif_plan_provision_id  
+            left join dbo.t_pif_plan_provision_ext tpppe  
+            on tpppe.pif_plan_provision_id = tppp2.pif_plan_provision_id  
+            left join dbo.t_pif_tracker tpt 
+            on tpt.pif_benefit_plan_id = tppp2.benefit_plan_id  
+            left join dbo.t_pif_task tpt2  
+            on tpt2.tracker_id = tpt.tracker_id  
+            left join dbo.t_pif_inpatient_provision tpip  
+            on tpip.pif_plan_provision_id = tppp2.pif_plan_provision_id  
+            left join dbo.t_pif_benefit_plan_note tpbpn  
+            on tpbpn.pif_benefit_plan_id = tpt.pif_benefit_plan_id 
+            left join dbo.t_pif_benefit_note_tier tpbnt 
+            on tpbnt.note_id = tpbpn.note_id
+                        left join dbo.t_plan_note_detail tpnd  
+            on tpnd.plan_id = p2.plan_id  
+            left join dbo.t_plan_note tpn2 
+            on tpn2.plan_id = p2.plan_id  
+            left join dbo.t_plan_auth_rule tpar  
+            on tpar.plan_id = p2.plan_id  
+            left join dbo.t_plan_membership tpm  
+            on tpm.plan_id = p2.plan_id   
+            left join dbo.t_plan_limit tpl  
+            on tpl.plan_id = p2.plan_id  
+            left join dbo.t_plan_level tpl2  
+            on tpl2.plan_id = p2.plan_id  
+            left join dbo.t_plan_eap tpe  
+            on tpe.plan_id = p2.plan_id  
+            left join dbo.t_plan_claim tpc  
+            on tpc.plan_id = p2.plan_id  
+            left join dbo.t_auth_proc_prog tapp  
+            on tapp.plan_id = p2.plan_id  
+            left join dbo.t_plan_xref tpx  
+            on tpx.plan_id = p2.plan_id  
+            left join dbo.t_subst_proc_prog tspp  
+            on tspp.plan_id = p2.plan_id  
+            left join dbo.t_plan_subst tps  
+            on tps.subst_id = tspp.subst_id  
+            left join dbo.t_plan_transition tptra 
+            on tptra.plan_id = p2.plan_id  
+            left join dbo.t_limit_proc_prog tlpp  
+            on tlpp.plan_id = p2.plan_id  
+            left join dbo.t_plan_feature tpf  
+            on tpf.plan_id = p2.plan_id
+           left join dbo.t_contact_address tcaa
+            on tcaa.address_id = tla.address_id 
+            left join dbo.t_contact tc
+            on tc.contact_id = tcaa.contact_id 
+            left join dbo.t_address ta
+on ta.address_id = tcaa.address_id 
+left join dbo.t_contact_email tce 
+on tce.contact_id = tc.contact_id 
+left join dbo.t_email te 
+on te.email_id = tce.email_id 
+left join dbo.t_contact_phone tcp 
+on tcp.contact_id = tc.contact_id 
+left join dbo.t_phone tp 
+on tp.phone_id = tcp.phone_id
+where a.account_id = 10119
+
+            
+																										
+                             
