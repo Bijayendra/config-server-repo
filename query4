@@ -1,0 +1,33 @@
+select *, tg.eff_date as grp_eff_date, tg.term_date as grp_term_date , tgn.eff_date as tgn_eff_date,  
+                        tgn.term_date as tgn_term_date, tgp.eff_date as tgp_eff_date, tgp.term_date as tgp_term_plan,  
+                        tgpc.eff_date as tgpc_eff_date, tgpc.term_date as tgpc_term_date,
+                        tgpu.eff_date as tgpu_eff_date, tgpu.term_date  as tgpu_term_date,
+                        tgpus.eff_date  as tgpus_eff_date, tgpus.term_date as tgpus_term_date  
+                        from dbo.t_group tg  
+                        left join dbo.t_group_note tgn    
+                                    on tgn.group_id = tg.group_id    
+                                    join dbo.t_group_xref tgx    
+                                    on tgx.group_id = tg.group_id    
+                                    left join dbo.t_group_note_detail tgnd    
+                                    on tgnd.note_id = tgn.note_id    
+                                    join dbo.t_group_package tgp    
+                                    on tgp.group_id = tg.group_id    
+                                    left join dbo.t_group_package_cosmos tgpc    
+                                    on tgpc.package_id = tgp.package_id    
+                                    left join dbo.t_group_package_unet tgpu    
+                                    on tgpu.package_id = tgp.package_id   
+                                    left join dbo.t_group_package_usp tgpus    
+                                    on tgpus.package_id = tgp.package_id    
+                                    left join dbo.t_group_package_xref tgpx    
+                                    on tgpx.package_id = tgp.package_id   
+                                    left join dbo.t_group_plan_claim tgpc2    
+                                    on tgpc2.group_id = tg.group_id    
+                                    left join dbo.t_group_plan_elig tgpe    
+                                    on tgpe.plan_id = tgpc2.plan_id    
+                                    left join dbo.t_group_plan_elig_dep tgped    
+                                    on tgped.plan_id = tgpe.plan_id    
+                                    where tg.account_id = :accountId
+                                    
+                                    
+                                    
+                                    Record 34
