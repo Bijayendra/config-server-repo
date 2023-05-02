@@ -1,0 +1,40 @@
+
+                         select * from  dbo.t_account_xref tax  
+                        left join dbo.t_account tac   
+                        on tac.account_id = tax.account_id  
+                        left join dbo.t_account_carrier tac2   
+                        on tac2.account_id = tac.account_id   
+                        left join dbo.t_carrier tc   
+                        on tc.carrier_id =tac2.carrier_id   
+                        left join dbo.t_account_contact tac3   
+                        on tac3.account_id = tac.account_id                                      
+                        left join dbo.t_account_mgt tam  
+                        on tam.account_id = tac.account_id   
+                        left join dbo.t_account_note_detail tand  
+                        on tand.account_id = tac.account_id   
+                        left join dbo.t_external_benefit teb  
+                        on teb.account_id = tac.account_id  
+                        left join dbo.t_account_note tan  
+                        on tan.account_id = tac.account_id  
+                        left join dbo.t_account_worker taw  
+                        on taw.account_id = tac.account_id  
+                        left join dbo.t_alias ta  
+                        on ta.account_id = tac.account_id  
+                        left join dbo.t_location tl   
+                        on tl.loc = tam.bh_loc   
+                        left join dbo.t_loc_phone_extra tlpe   
+                        on tlpe.loc = tam.bh_loc   
+                        left join dbo.t_loc_phone tlp   
+                        on tlp.phone_id = tlpe.phone_id   
+                        left join dbo.t_user tu   
+                        on tu.user_id = taw.user_id   
+                        left join dbo.t_user_role tur   
+                        on tur.user_id = tu.user_id   
+                        left join dbo.t_loc_address_extra tlae  
+                        on tlae.loc = tl.loc  
+                        left join dbo.t_loc_address tla  
+                        on tla.address_id = tlae.address_id  
+                        where tac.account_id = :accountId
+                        
+                        
+                        Record 324
